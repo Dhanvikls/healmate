@@ -1,0 +1,295 @@
+{
+  "patients": [
+    {
+      "id": "HM-001",
+      "name": "Rajesh Patel",
+      "age": 54,
+      "condition": "Post Cardiac Surgery",
+      "day": 10,
+      "totalDays": 21,
+      "status": "critical",
+      "painLevel": 3,
+      "lastCheckin": "2 hrs ago",
+      "caregiver": "Sunita Patel",
+      "temp": "98.4°F",
+      "qsofa": 0,
+      "adherence": 85,
+      "trend": "improving",
+      "doctorName": "Dr. Meera Shah"
+    },
+    {
+      "id": "HM-002",
+      "name": "Priya Sharma",
+      "age": 42,
+      "condition": "Post Appendectomy",
+      "day": 5,
+      "totalDays": 14,
+      "status": "mild",
+      "painLevel": 6,
+      "lastCheckin": "5 hrs ago",
+      "caregiver": "Rohit Sharma",
+      "temp": "99.8°F",
+      "qsofa": 1,
+      "adherence": 72,
+      "trend": "stable",
+      "doctorName": "Dr. Meera Shah"
+    },
+    {
+      "id": "HM-003",
+      "name": "Mohan Das",
+      "age": 67,
+      "condition": "Hip Replacement",
+      "day": 14,
+      "totalDays": 30,
+      "status": "critical",
+      "painLevel": 8,
+      "lastCheckin": "8 hrs ago",
+      "caregiver": "Kavita Das",
+      "temp": "101.2°F",
+      "qsofa": 2,
+      "adherence": 45,
+      "trend": "worsening",
+      "doctorName": "Dr. Meera Shah"
+    },
+    {
+      "id": "HM-8912",
+      "name": "heygy",
+      "age": 50,
+      "condition": "hiadbh",
+      "day": 1,
+      "totalDays": 14,
+      "status": "good",
+      "painLevel": 0,
+      "lastCheckin": "Just now",
+      "caregiver": "Primary Caregiver",
+      "temp": "98.6°F",
+      "qsofa": 0,
+      "adherence": 100,
+      "trend": "stable",
+      "doctorName": "Dr. Meera Shah"
+    },
+    {
+      "id": "HM-6660",
+      "name": "hetvi",
+      "age": 50,
+      "condition": "fever",
+      "day": 1,
+      "totalDays": 14,
+      "status": "good",
+      "painLevel": 0,
+      "lastCheckin": "Just now",
+      "caregiver": "Primary Caregiver",
+      "temp": "98.6°F",
+      "qsofa": 0,
+      "adherence": 100,
+      "trend": "stable",
+      "doctorName": "Dr. Meera Shah"
+    },
+    {
+      "id": "HM-8096",
+      "name": "hetvi",
+      "age": 16,
+      "dob": "2010-01-03",
+      "city": "bil",
+      "condition": "typhoid",
+      "day": 1,
+      "totalDays": 14,
+      "status": "good",
+      "painLevel": 0,
+      "lastCheckin": "Just now",
+      "caregiver": "Primary Caregiver",
+      "temp": "98.6°F",
+      "qsofa": 0,
+      "adherence": 100,
+      "trend": "stable",
+      "doctorName": "Dr. Meera Shah"
+    }
+  ],
+  "alerts": [
+    {
+      "id": 1774785167849,
+      "patientId": "HM-001",
+      "patient": "Rajesh Patel",
+      "type": "critical",
+      "message": "🚨 EMERGENCY SOS triggered by patient. Immediate review required!",
+      "time": "Just now",
+      "resolved": false
+    },
+    {
+      "id": 1774785105431,
+      "patientId": "HM-001",
+      "patient": "Rajesh Patel",
+      "type": "critical",
+      "message": "🚨 EMERGENCY SOS triggered by patient. Immediate review required!",
+      "time": "Just now",
+      "resolved": false
+    },
+    {
+      "id": 1,
+      "patientId": "HM-003",
+      "patient": "Mohan Das",
+      "type": "critical",
+      "message": "qSOFA score 2/3 — High sepsis risk. Immediate review needed.",
+      "time": "15 min ago",
+      "resolved": false
+    },
+    {
+      "id": 2,
+      "patientId": "HM-002",
+      "patient": "Priya Sharma",
+      "type": "moderate",
+      "message": "Pain level jumped from 4 to 6 in last 24 hours.",
+      "time": "5 hrs ago",
+      "resolved": false
+    }
+  ],
+  "checkins": [
+    {
+      "id": 1,
+      "patientId": "HM-001",
+      "date": "Today",
+      "painLevel": 3,
+      "temp": "98.4°F",
+      "status": "good",
+      "notes": "Feeling better",
+      "symptoms": [],
+      "qsofaScore": 0
+    }
+  ],
+  "medications": {
+    "HM-001": [
+      {
+        "name": "Aspirin 75mg",
+        "time": "8:00 AM",
+        "taken": true,
+        "icon": "💊"
+      },
+      {
+        "name": "Metoprolol 25mg",
+        "time": "2:00 PM",
+        "taken": true,
+        "icon": "💊"
+      },
+      {
+        "name": "Atorvastatin 40mg",
+        "time": "9:00 PM",
+        "taken": false,
+        "icon": "💊"
+      }
+    ],
+    "HM-8912": [
+      {
+        "name": "Prescribed Med 1",
+        "time": "8:00 AM",
+        "taken": false,
+        "icon": "💊"
+      },
+      {
+        "name": "Prescribed Med 2",
+        "time": "8:00 PM",
+        "taken": false,
+        "icon": "💊"
+      }
+    ],
+    "HM-6660": [
+      {
+        "name": "Prescribed Med 1",
+        "time": "8:00 AM",
+        "taken": false,
+        "icon": "💊"
+      },
+      {
+        "name": "Prescribed Med 2",
+        "time": "8:00 PM",
+        "taken": false,
+        "icon": "💊"
+      }
+    ],
+    "HM-8096": [
+      {
+        "name": "Prescribed Med 1",
+        "time": "8:00 AM",
+        "taken": false,
+        "icon": "💊"
+      },
+      {
+        "name": "Prescribed Med 2",
+        "time": "8:00 PM",
+        "taken": false,
+        "icon": "💊"
+      }
+    ]
+  },
+  "tasks": {
+    "HM-001": [
+      {
+        "task": "10-min morning walk",
+        "done": true,
+        "category": "Exercise"
+      },
+      {
+        "task": "Breathing exercises (3 sets)",
+        "done": true,
+        "category": "Exercise"
+      },
+      {
+        "task": "Wound dressing check",
+        "done": false,
+        "category": "Wound Care"
+      }
+    ],
+    "HM-8912": [
+      {
+        "task": "Read AI Recovery Plan",
+        "done": false,
+        "category": "Education"
+      },
+      {
+        "task": "First Check-in",
+        "done": false,
+        "category": "Health"
+      }
+    ],
+    "HM-6660": [
+      {
+        "task": "Read AI Recovery Plan",
+        "done": false,
+        "category": "Education"
+      },
+      {
+        "task": "First Check-in",
+        "done": false,
+        "category": "Health"
+      }
+    ],
+    "HM-8096": [
+      {
+        "task": "Read AI Recovery Plan",
+        "done": false,
+        "category": "Education"
+      },
+      {
+        "task": "First Check-in",
+        "done": false,
+        "category": "Health"
+      }
+    ]
+  },
+  "wounds": {
+    "HM-001": [
+      {
+        "day": "Day 1",
+        "status": "Baseline",
+        "color": "#94a3b8"
+      },
+      {
+        "day": "Day 5",
+        "status": "Improving",
+        "color": "#f59e0b"
+      }
+    ],
+    "HM-8912": [],
+    "HM-6660": [],
+    "HM-8096": []
+  }
+}
