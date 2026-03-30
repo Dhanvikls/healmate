@@ -6,9 +6,9 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(req: NextRequest) {
   try {
-    const { pdfText, patientName, condition, age, dob, city } = await req.json();
+    const { pdfText, patientName, condition, age, dob, city, manualMedications } = await req.json();
 
-    const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `You are a medical AI assistant for HealMate, a post-hospital recovery app.
 
@@ -56,10 +56,12 @@ Keep it practical and easy to follow for a patient at home.`;
     };
 
     db.patients.push(newPatient);
-    db.medications[newId] = [
-       { name: "Prescribed Med 1", time: "8:00 AM", taken: false, icon: "💊" },
-       { name: "Prescribed Med 2", time: "8:00 PM", taken: false, icon: "💊" }
-    ];
+    db.medications[newId] = manualMedications && manualMedications.length > 0 
+      ? manualMedications.map((m: any) => ({ ...m, taken: false, icon: "💊" }))
+      : [
+         { name: "Prescribed Med 1", time: "8:00 AM", taken: false, icon: "💊" },
+         { name: "Prescribed Med 2", time: "8:00 PM", taken: false, icon: "💊" }
+      ];
     db.tasks[newId] = [
        { task: "Read AI Recovery Plan", done: false, category: "Education" },
        { task: "First Check-in", done: false, category: "Health" }

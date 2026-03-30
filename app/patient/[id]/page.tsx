@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 // ── HealMate Logo (shared component – extract to components/shared/Logo.tsx later)
 function HealMateLogo({ size = 36 }: { size?: number }) {
@@ -31,20 +31,32 @@ type CheckinStep = 'pain' | 'symptoms' | 'qsofa' | 'done';
 
 export default function PatientDashboard() {
   const params = useParams();
+  const router = useRouter();
   const [patientId, setPatientId] = useState<string | null>(params.id as string || null);
   const [errorLog, setErrorLog] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [debugLog, setDebugLog] = useState<string[]>(["Booting dashboard..."]);
 
   const addLog = (msg: string) => setDebugLog(prev => [...prev.slice(-10), `> ${msg}`]);
-
-  // Sync patientId if params change
+  
+  // Sync patientId and verify session
   useEffect(() => {
     if (params.id) {
+      const loggedInId = localStorage.getItem("healmate_patient_id");
+      if (loggedInId !== params.id) {
+        // Only redirect if we are on the client and not during SSR
+        if (typeof window !== "undefined") {
+          router.push("/patient");
+        }
+        return;
+      }
       setPatientId(params.id as string);
-      addLog(`Patient ID synchronized: ${params.id}`);
+    } else {
+      if (typeof window !== "undefined") {
+        router.push("/patient");
+      }
     }
-  }, [params.id]);
+  }, [params.id, router]);
 
 
   
@@ -306,6 +318,17 @@ export default function PatientDashboard() {
                 <span style={{ fontSize: 13, color: "#2d9e8f" }}>CODE:</span>
                 <span style={{ fontSize: 14, fontWeight: 800, color: "#0e7490", letterSpacing: 1 }}>{patient.code}</span>
               </div>
+              <button 
+                onClick={() => {
+                  localStorage.removeItem("healmate_patient_id");
+                  router.push("/patient");
+                }}
+                style={{ padding: "8px 16px", borderRadius: 12, background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.2)", color: "#ef4444", fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+                onMouseOver={(e) => e.currentTarget.style.background = "rgba(239,68,68,0.1)"}
+                onMouseOut={(e) => e.currentTarget.style.background = "rgba(239,68,68,0.05)"}
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>

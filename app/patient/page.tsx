@@ -27,24 +27,25 @@ function HealMateLogo({ size = 36 }: { size?: number }) {
 }
 
 export default function PatientLogin() {
-  const [accessCode, setAccessCode] = useState("");
+  const [patientId, setPatientId] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (accessCode.trim()) {
+    if (patientId.trim()) {
       setIsLoading(true);
       setError("");
       try {
-        const res = await fetch(`/api/patient/lookup?code=${encodeURIComponent(accessCode.trim())}`);
+        const res = await fetch(`/api/patient/${encodeURIComponent(patientId.trim())}`);
         const data = await res.json();
         
-        if (res.ok && data.patientId) {
-          router.push(`/patient/${data.patientId}`);
+        if (res.ok && data.patient) {
+          localStorage.setItem("healmate_patient_id", patientId.trim());
+          router.push(`/patient/${patientId.trim()}`);
         } else {
-          setError(data.error || "Invalid access code. Please try again.");
+          setError(data.error || "Patient ID not found. Please try again.");
           setIsLoading(false);
         }
       } catch (err) {
@@ -64,15 +65,15 @@ export default function PatientLogin() {
         <div style={{ background: "white", padding: 48, borderRadius: 24, boxShadow: "0 10px 40px rgba(0,0,0,0.06)", maxWidth: 460, width: "100%", textAlign: "center" }}>
           <h1 style={{ fontFamily: "'Syne', sans-serif", fontSize: 28, fontWeight: 800, color: "#0f172a", marginBottom: 12 }}>Patient Login</h1>
           <p style={{ color: "#64748b", fontSize: 15, marginBottom: 32, lineHeight: 1.6 }}>
-            Scan your unique HealMate QR code, or enter your <strong>Access Code</strong> below to open your dashboard.
+            Scan your unique HealMate QR code, or enter your <strong>Patient ID</strong> below to open your dashboard.
           </p>
 
           <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <input 
               type="text" 
-              placeholder="e.g. 1234" 
-              value={accessCode}
-              onChange={(e) => setAccessCode(e.target.value)}
+              placeholder="e.g. HM-001" 
+              value={patientId}
+              onChange={(e) => setPatientId(e.target.value)}
               style={{ padding: "16px 20px", borderRadius: 14, border: error ? "2px solid #ef4444" : "2px solid #e2e8f0", fontSize: 16, outline: "none", transition: "border 0.2s" }}
               required
             />
