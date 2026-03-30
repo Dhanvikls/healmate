@@ -2,6 +2,7 @@
   "patients": [
     {
       "id": "HM-001",
+      "code": "1234",
       "name": "Rajesh Patel",
       "age": 54,
       "condition": "Post Cardiac Surgery",
@@ -19,6 +20,7 @@
     },
     {
       "id": "HM-002",
+      "code": "2345",
       "name": "Priya Sharma",
       "age": 42,
       "condition": "Post Appendectomy",
@@ -36,7 +38,8 @@
     },
     {
       "id": "HM-003",
-      "name": "Mohan Das",
+      "code": "3456",
+      "name": "Mohon Das",
       "age": 67,
       "condition": "Hip Replacement",
       "day": 14,
@@ -53,6 +56,7 @@
     },
     {
       "id": "HM-8912",
+      "code": "4567",
       "name": "heygy",
       "age": 50,
       "condition": "hiadbh",
@@ -70,6 +74,7 @@
     },
     {
       "id": "HM-6660",
+      "code": "5678",
       "name": "hetvi",
       "age": 50,
       "condition": "fever",
@@ -87,6 +92,7 @@
     },
     {
       "id": "HM-8096",
+      "code": "6789",
       "name": "hetvi",
       "age": 16,
       "dob": "2010-01-03",

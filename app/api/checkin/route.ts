@@ -6,11 +6,50 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "AIzaSyDummy"
 
 export async function POST(req: NextRequest) {
   try {
-    const { patientId, symptoms, painLevel, qsofa, patientName } = await req.json();
+    const { patientId, symptoms, painLevel, qsofa, patientName, medications } = await req.json();
 
     if (!patientId) return NextResponse.json({ error: "Patient ID required" }, { status: 400 });
 
+    const db = getDb();
     const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+
+    // If medications are provided (e.g. from ASHA worker), update them
+    if (medications && Array.isArray(medications)) {
+      db.medications[patientId] = [
+        ...(db.medications[patientId] || []),
+        ...medications.map((m: any) => ({
+          name: m.name,
+          time: m.time,
+          taken: false,
+          icon: m.icon || "💊"
+        }))
+      ];
+    }
+
+    // Auto-create patient if it's a new ASHA-TMP ID
+    if (patientId.startsWith("ASHA-TMP-") && !db.patients.find(p => p.id === patientId)) {
+      const newCode = Math.floor(1000 + Math.random() * 9000).toString();
+      db.patients.push({
+        id: patientId,
+        code: newCode,
+        name: patientName || "New Patient",
+        age: 50, // Default
+        condition: symptoms?.join(", ") || "General Follow-up",
+        status: "good",
+        lastCheckin: "Just now",
+        painLevel: painLevel || 0,
+        temp: "98.6",
+        qsofa: qsofa || 0,
+        day: 1,
+        totalDays: 14,
+        adherence: 100,
+        trend: "stable",
+        doctorName: "Dr. Meera Shah", // Default
+        caregiver: "Assigned by ASHA"
+      });
+      // Initialize empty tasks if not present
+      if (!db.tasks[patientId]) db.tasks[patientId] = [];
+    }
 
     const prompt = `You are a medical AI assistant for HealMate, a post-hospital recovery app.
 
@@ -34,8 +73,6 @@ Format your response as plain text, no markdown.`;
     const riskLevel = text.includes("HIGH") ? "critical" : text.includes("MODERATE") ? "moderate" : "low";
     const alertDoctor = text.includes("YES") || qsofa >= 2 || painLevel >= 8;
 
-    const db = getDb();
-    
     const newCheckin: Checkin = {
       id: Date.now(),
       patientId,

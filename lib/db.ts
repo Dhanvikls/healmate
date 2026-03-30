@@ -3,6 +3,7 @@ import path from 'path';
 
 export type Patient = {
   id: string;
+  code: string;
   name: string;
   age: number;
   dob?: string;
@@ -76,9 +77,9 @@ const DB_PATH = path.join(process.cwd(), 'data.json');
 
 const INITIAL_DB: Database = {
   patients: [
-    { id: "HM-001", name: "Rajesh Patel", age: 54, condition: "Post Cardiac Surgery", day: 10, totalDays: 21, status: "good", painLevel: 3, lastCheckin: "2 hrs ago", caregiver: "Sunita Patel", temp: "98.4°F", qsofa: 0, adherence: 85, trend: "improving", doctorName: "Dr. Meera Shah" },
-    { id: "HM-002", name: "Priya Sharma", age: 42, condition: "Post Appendectomy", day: 5, totalDays: 14, status: "mild", painLevel: 6, lastCheckin: "5 hrs ago", caregiver: "Rohit Sharma", temp: "99.8°F", qsofa: 1, adherence: 72, trend: "stable", doctorName: "Dr. Meera Shah" },
-    { id: "HM-003", name: "Mohan Das", age: 67, condition: "Hip Replacement", day: 14, totalDays: 30, status: "critical", painLevel: 8, lastCheckin: "8 hrs ago", caregiver: "Kavita Das", temp: "101.2°F", qsofa: 2, adherence: 45, trend: "worsening", doctorName: "Dr. Meera Shah" }
+    { id: "HM-001", code: "1234", name: "Rajesh Patel", age: 54, condition: "Post Cardiac Surgery", day: 10, totalDays: 21, status: "good", painLevel: 3, lastCheckin: "2 hrs ago", caregiver: "Sunita Patel", temp: "98.4°F", qsofa: 0, adherence: 85, trend: "improving", doctorName: "Dr. Meera Shah" },
+    { id: "HM-002", code: "2345", name: "Priya Sharma", age: 42, condition: "Post Appendectomy", day: 5, totalDays: 14, status: "mild", painLevel: 6, lastCheckin: "5 hrs ago", caregiver: "Rohit Sharma", temp: "99.8°F", qsofa: 1, adherence: 72, trend: "stable", doctorName: "Dr. Meera Shah" },
+    { id: "HM-003", code: "3456", name: "Mohan Das", age: 67, condition: "Hip Replacement", day: 14, totalDays: 30, status: "critical", painLevel: 8, lastCheckin: "8 hrs ago", caregiver: "Kavita Das", temp: "101.2°F", qsofa: 2, adherence: 45, trend: "worsening", doctorName: "Dr. Meera Shah" }
   ],
   alerts: [
     { id: 1, patientId: "HM-003", patient: "Mohan Das", type: "critical", message: "qSOFA score 2/3 — High sepsis risk. Immediate review needed.", time: "15 min ago", resolved: false },

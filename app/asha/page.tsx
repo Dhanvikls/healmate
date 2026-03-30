@@ -31,7 +31,7 @@ const recentSubmissions = [
   { name: "Bharat Patel", village: "Anand", date: "Yesterday", status: "synced", pain: 2 },
 ];
 
-type Step = "patient" | "vitals" | "symptoms" | "done";
+type Step = "patient" | "vitals" | "symptoms" | "medications" | "done";
 
 export default function AshaWorkerPage() {
   const [step, setStep] = useState<Step>("patient");
@@ -46,7 +46,10 @@ export default function AshaWorkerPage() {
     symptoms: [] as string[],
     notes: "",
     hasSmartphone: "no",
+    medications: [] as { name: string; time: string }[],
   });
+  const [newMedName, setNewMedName] = useState("");
+  const [newMedTime, setNewMedTime] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [syncing, setSyncing] = useState(false);
 
@@ -59,6 +62,24 @@ export default function AshaWorkerPage() {
         ? prev.symptoms.filter(x => x !== s)
         : [...prev.symptoms, s],
     }));
+
+  const addMed = () => {
+    if (newMedName && newMedTime) {
+      setForm(prev => ({
+        ...prev,
+        medications: [...prev.medications, { name: newMedName, time: newMedTime }],
+      }));
+      setNewMedName("");
+      setNewMedTime("");
+    }
+  };
+
+  const removeMed = (index: number) => {
+    setForm(prev => ({
+      ...prev,
+      medications: prev.medications.filter((_, i) => i !== index),
+    }));
+  };
 
   const handleSync = async () => {
     setSyncing(true);
@@ -77,7 +98,8 @@ export default function AshaWorkerPage() {
                 patientName: form.patientName,
                 symptoms: form.symptoms,
                 painLevel: form.painLevel,
-                qsofa: form.breathing === 'difficulty' ? 1 : 0
+                qsofa: form.breathing === 'difficulty' ? 1 : 0,
+                medications: form.medications // new field
             })
         });
     } catch (e) {
@@ -90,10 +112,10 @@ export default function AshaWorkerPage() {
   const handleReset = () => {
     setStep("patient");
     setSubmitted(false);
-    setForm({ patientName: "", age: "", village: "", phone: "", painLevel: 3, temp: "", breathing: "", symptoms: [], notes: "", hasSmartphone: "no" });
+    setForm({ patientName: "", age: "", village: "", phone: "", painLevel: 3, temp: "", breathing: "", symptoms: [], notes: "", hasSmartphone: "no", medications: [] });
   };
 
-  const stepIndex = (s: Step) => ["patient", "vitals", "symptoms", "done"].indexOf(s);
+  const stepIndex = (s: Step) => ["patient", "vitals", "symptoms", "medications", "done"].indexOf(s);
 
   return (
     <div style={{ fontFamily: "'DM Sans',sans-serif", background: "#f0fdf4", minHeight: "100vh" }}>
@@ -195,15 +217,15 @@ export default function AshaWorkerPage() {
             {/* Step indicator */}
             {!submitted && (
               <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 28 }}>
-                {(["patient", "vitals", "symptoms", "done"] as Step[]).map((s, i) => (
+                {(["patient", "vitals", "symptoms", "medications", "done"] as Step[]).map((s, i) => (
                   <div key={s} style={{ display: "flex", alignItems: "center", gap: 6 }}>
                     <div style={{ width: 30, height: 30, borderRadius: "50%", background: stepIndex(step) > i ? "#22c55e" : step === s ? "linear-gradient(135deg,#2d9e8f,#0e7490)" : "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, color: step === s || stepIndex(step) > i ? "white" : "#94a3b8", fontWeight: 700 }}>
                       {stepIndex(step) > i ? "✓" : i + 1}
                     </div>
-                    <span style={{ fontSize: 12, fontWeight: 600, color: step === s ? "#2d9e8f" : "#94a3b8", display: i === 3 ? "none" : "block" }}>
-                      {["Patient", "Vitals", "Symptoms"][i]}
+                    <span style={{ fontSize: 12, fontWeight: 600, color: step === s ? "#2d9e8f" : "#94a3b8", display: i === 4 ? "none" : "block" }}>
+                      {["Patient", "Vitals", "Symptoms", "Medications"][i]}
                     </span>
-                    {i < 2 && <div style={{ width: 24, height: 2, background: stepIndex(step) > i ? "#22c55e" : "#e2e8f0", borderRadius: 2 }} />}
+                    {i < 3 && <div style={{ width: 24, height: 2, background: stepIndex(step) > i ? "#22c55e" : "#e2e8f0", borderRadius: 2 }} />}
                   </div>
                 ))}
               </div>
@@ -364,6 +386,52 @@ export default function AshaWorkerPage() {
 
                 <div style={{ display: "flex", gap: 12 }}>
                   <button className="btn-secondary" onClick={() => setStep("vitals")} style={{ flex: 1 }}>← Back</button>
+                  <button className="btn-primary" onClick={() => setStep("medications")} style={{ flex: 2 }}>Next: Medications →</button>
+                </div>
+              </div>
+            )}
+
+            {/* ── STEP 4: Medications ── */}
+            {step === "medications" && !submitted && (
+              <div className="fade-in">
+                <h2 className="syne" style={{ fontSize: 20, fontWeight: 800, color: "#0f172a", marginBottom: 4 }}>Prescribed Medications</h2>
+                <p style={{ fontSize: 13, color: "#94a3b8", marginBottom: 24 }}>Add medicines prescribed by the doctor during discharge or visit.</p>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 24 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <div>
+                      <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Medicine Name</label>
+                      <input className="input" placeholder="e.g. Aspirin 75mg" value={newMedName} onChange={e => setNewMedName(e.target.value)} />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Timing</label>
+                      <input className="input" placeholder="e.g. 8:00 AM" value={newMedTime} onChange={e => setNewMedTime(e.target.value)} />
+                    </div>
+                  </div>
+                  <button className="btn-secondary" onClick={addMed} style={{ borderStyle: "dashed", borderColor: "#2d9e8f", color: "#2d9e8f" }}>
+                    + Add to Prescription
+                  </button>
+                </div>
+
+                {form.medications.length > 0 && (
+                  <div style={{ marginBottom: 24 }}>
+                    <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 12 }}>Prescribed List</label>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {form.medications.map((m, i) => (
+                        <div key={i} style={{ padding: "10px 14px", borderRadius: 12, background: "#f8fafc", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <div>
+                            <span style={{ fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{m.name}</span>
+                            <span style={{ fontSize: 12, color: "#64748b", marginLeft: 8 }}>🕒 {m.time}</span>
+                          </div>
+                          <button onClick={() => removeMed(i)} style={{ background: "none", border: "none", color: "#ef4444", fontSize: 18, cursor: "pointer", padding: "0 4px" }}>×</button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div style={{ display: "flex", gap: 12 }}>
+                  <button className="btn-secondary" onClick={() => setStep("symptoms")} style={{ flex: 1 }}>← Back</button>
                   <button className="btn-primary" onClick={handleSync} style={{ flex: 2, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
                     {syncing ? <><span className="spin">⟳</span> Syncing to Doctor...</> : "Submit & Sync to Doctor ✓"}
                   </button>

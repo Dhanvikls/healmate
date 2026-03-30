@@ -296,10 +296,16 @@ export default function PatientDashboard() {
                 {alertLevel === "critical" ? "⚠️ Alert Active" : alertLevel === "moderate" ? "Mild Concern" : "All Clear"}
               </span>
             </div>
-            {/* QR */}
-            <div style={{ padding: "8px 14px", borderRadius: 12, background: "white", border: "1px solid rgba(45,158,143,0.15)", display: "flex", alignItems: "center", gap: 6, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
-              <span style={{ fontSize: 16 }}>📱</span>
-              <span style={{ fontSize: 13, fontWeight: 600, color: "#0e7490" }}>{patient.id}</span>
+            {/* Patient Info Badge */}
+            <div style={{ display: "flex", gap: 10 }}>
+              <div style={{ padding: "8px 14px", borderRadius: 12, background: "white", border: "1px solid rgba(45,158,143,0.15)", display: "flex", alignItems: "center", gap: 6, boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
+                <span style={{ fontSize: 13, color: "#64748b" }}>ID:</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#0e7490" }}>{patient.id}</span>
+              </div>
+              <div style={{ padding: "8px 14px", borderRadius: 12, background: "rgba(45,158,143,0.08)", border: "1px solid rgba(45,158,143,0.2)", display: "flex", alignItems: "center", gap: 6, boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                <span style={{ fontSize: 13, color: "#2d9e8f" }}>CODE:</span>
+                <span style={{ fontSize: 14, fontWeight: 800, color: "#0e7490", letterSpacing: 1 }}>{patient.code}</span>
+              </div>
             </div>
           </div>
         </div>

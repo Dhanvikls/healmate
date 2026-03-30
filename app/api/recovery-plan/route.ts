@@ -32,9 +32,11 @@ Keep it practical and easy to follow for a patient at home.`;
     // Create a new patient in the database
     const db = getDb();
     const newId = `HM-${Date.now().toString().slice(-4)}`;
+    const newCode = Math.floor(1000 + Math.random() * 9000).toString();
     
     const newPatient: Patient = {
       id: newId,
+      code: newCode,
       name: patientName || "Unknown Patient",
       age: age ? parseInt(age) : 50,
       dob: dob || undefined,
