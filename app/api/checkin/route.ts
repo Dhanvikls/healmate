@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     if (!patientId) return NextResponse.json({ error: "Patient ID required" }, { status: 400 });
 
     const db = getDb();
-    const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     // If medications are provided (e.g. from ASHA worker), update them
     if (medications && Array.isArray(medications)) {
